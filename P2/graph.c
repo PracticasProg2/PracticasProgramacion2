@@ -114,6 +114,8 @@ int *_graph_getConnectionsIndex(const Graph *g, int ix){
   }
 
   return vertices;
+  
+  
 }
 
 /*----------------------------------------------------------------------------------------*/
