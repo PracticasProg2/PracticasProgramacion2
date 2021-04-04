@@ -334,7 +334,7 @@ Status graph_depthSearch(Graph *g, long from_id, long to_id){
 
   int i;
 
-  Vertex *v, *v2;
+  Vertex *v;
   Stack *s=stack_init();
   if (!s) return ERROR;
 
