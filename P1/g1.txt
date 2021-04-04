@@ -1,0 +1,11 @@
+Práctica 1
+  Ejrcicio 1
+    2.-
+      a) La función vertex_cmp_ptr devolverá TRUE. Esto es debido a que en el int main se crea un puntero a vertex, al llamar a la función vertex_cmp_ptr se iguala a otro vector por lo que el valor de retorno será TRUE.
+      b) La función vertex_cmp_ptr devolverá TRUE. En este caso en el int main se declara un int pero al llamar a la función vertex_cmp_ptr se iguala para que el int sea un puntero a vertex, por lo que volverá a ser TRUE el valor de retorno.
+    3.-
+      a) El siguiente código es incorrecto porque se esta usando la función vertex_print sin haber inicializado un vector.
+      b) El siguiente código es correcto ya que todos los pasos que se siguen tienen lógica y las funciones usadas están declaradas anteriormente.
+      c) El siguiente código es correcto es igual al anterior pero usando un doble puntero.
+    4.-
+      En nuestro caso hemos implementado dos funciones privadas para facilitar y simplificar el código, aunque se podría haber hecho sin el uso de estas.
