@@ -348,10 +348,6 @@ Status graph_depthSearch(Graph *g, long from_id, long to_id){
   while (stack_isEmpty(s)==FALSE){
     v=stack_pop(s);
     if (vertex_getId(v)==to_id){
-      while (stack_isEmpty(s)==FALSE){
-        v2=stack_pop(s);
-        vertex_free(v2);
-      }
       stack_free(s);
       return OK;
     }
