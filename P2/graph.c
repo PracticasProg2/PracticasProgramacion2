@@ -347,6 +347,8 @@ Status graph_depthSearch(Graph *g, long from_id, long to_id){
   
   while (stack_isEmpty(s)==FALSE){
     v=stack_pop(s);
+    vertex_print(stdout,v);
+    printf("\n");
     if (vertex_getId(v)==to_id){
       stack_free(s);
       return OK;

@@ -25,12 +25,15 @@ int main (int argc, char *argv[]){
     fclose(f);
     return -1;
   }
+  printf("Input graph:\n");
   graph_readFromFile(f,g);
   graph_print(stdout,g);
-  
+
+  printf("From Vertex id: %ld\n",id1);
+  printf("To Vertex id: %ld\n",id2);
+
+  printf("Output:\n");
   graph_depthSearch(g,id1,id2);
-  printf("\n\n\n\n\n\n\n\n\n");
-  graph_print(stdout,g);
   
   fclose(f);
   graph_free(g);

@@ -38,7 +38,7 @@ void stack_free (Stack *s){
   free(s);
 }
 
-Status stack_push (Stack *s, const void *ele){
+Status stack_push (Stack *s, void *ele){
   if(!s || !ele) return ERROR;
   
   if(stack_isFull(s)==TRUE){
@@ -93,4 +93,19 @@ size_t stack_size (const Stack *s){
   if(!s) return -1;
   
   return s->top;
+}
+
+int stack_print(FILE* fp, const Stack *s,  P_stack_ele_print f){
+  if(!fp || !s || !f) return -1;
+
+  int a, n=0, i;
+  a=stack_size(s);
+
+  n+=fprintf(fp,"SIZE: %d\n",a);
+
+  for(i=a-1;i>=0;i--){
+   n+=fprintf(fp,s->item[i],f);
+  }
+
+return n;
 }
