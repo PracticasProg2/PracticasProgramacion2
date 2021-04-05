@@ -24,8 +24,8 @@ stack_fDoble.o: stack_fDoble.h stack_fDoble.c
 p2_e1a: p2_e1a.o libstack_fDoble.a
 	$(CC) -o p2_e1a p2_e1a.o libstack_fDoble.a
 	
-p2_e1b: p2_e1b.o vertex.o libstack_fDoble.a
-	$(CC) -o p2_e1b vertex.o p2_e1b.o libstack_fDoble.a
+p2_e1b: p2_e1b.o vertex.o stack_fDoble.o
+	$(CC) -o p2_e1b vertex.o p2_e1b.o stack_fDoble.o
 
 p2_e2: graph.o vertex.o p2_e2.o libstack_fDoble.a
 	$(CC) -o p2_e2 graph.o vertex.o p2_e2.o libstack_fDoble.a

@@ -13,23 +13,24 @@ struct _Stack{
 
 
 
+Stack *stack_init () {
 
-Stack * stack_init (){
+    Stack *s = NULL;
 
-  Stack *s=NULL;
-  int i;
-  
-  s=(Stack*)malloc((INIT_CAPACITY)*sizeof(Stack));
-  if(s==NULL) return NULL;
-  
-  s->capacity=INIT_CAPACITY;
-  for(i=0;i<s->capacity;i++){
-    s->item=(void*)malloc(sizeof(void));
-  }
-  
-  s->top=-1;  
-  
-  return s;
+    s = (Stack *) malloc (sizeof(Stack));
+    if (s == NULL) {
+        return NULL;
+    }
+    
+    s->item = (void **) malloc (INIT_CAPACITY * sizeof(void*));
+    if (s->item == NULL) {
+        return NULL;
+    }
+
+    s->top = -1;
+    s->capacity = INIT_CAPACITY;
+    
+    return s;
 }
 
 void stack_free (Stack *s){
