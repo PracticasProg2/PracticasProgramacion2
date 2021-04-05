@@ -357,6 +357,11 @@ Status graph_depthSearch(Graph *g, long from_id, long to_id){
       stack_free(s);
       return OK;
     }
+    else if (graph_getNumberOfConnectionsFromId(g,vertex_getId(v))==0){
+      printf("Error in graph search algorithm.\n");
+      stack_free(s);
+      return ERROR;
+    }
     else{
       for(i=0;i<g->num_vertices;i++){
         if(g->connections[vertex_getIndex(v)][i]==TRUE){

@@ -68,7 +68,7 @@ int main(int argc, char *argv[]){
     return -1;
   }
   
-  aux=(char*)malloc(sizeof(char));
+  aux=(char*)malloc(MAX_DESCR*sizeof(char));
   if(!aux){
     stack_free(sin1);
     stack_free(sin2);
@@ -134,9 +134,12 @@ int main(int argc, char *argv[]){
     stack_push(sin2,h[i]);
   }
   
+  printf("Ranking 0:\n");
   stack_print(stdout, sin1, vertex_print);
+  printf("Ranking 1:\n");
   stack_print(stdout, sin2, vertex_print);
   mergeStacks(sin1,sin2,sout);
+  printf("Joint Ranking:\n");
   stack_print(stdout, sout, vertex_print);
   
   fclose(f1);
@@ -153,4 +156,4 @@ int main(int argc, char *argv[]){
   free(aux);
   
   return 0;
-}
+} 

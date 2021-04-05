@@ -27,8 +27,8 @@ p2_e1a: p2_e1a.o libstack_fDoble.a
 p2_e1b: p2_e1b.o vertex.o stack_fDoble.o
 	$(CC) -o p2_e1b vertex.o p2_e1b.o stack_fDoble.o
 
-p2_e2: graph.o vertex.o p2_e2.o libstack_fDoble.a
-	$(CC) -o p2_e2 graph.o vertex.o p2_e2.o libstack_fDoble.a
+p2_e2: graph.o vertex.o p2_e2.o stack_fDoble.o
+	$(CC) -o p2_e2 graph.o vertex.o p2_e2.o stack_fDoble.o
 	
 run: p2_e2
 	./p2_e2 g2.txt 100 700

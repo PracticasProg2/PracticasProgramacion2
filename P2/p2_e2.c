@@ -39,9 +39,3 @@ int main (int argc, char *argv[]){
   graph_free(g);
   return 0;
 }
-
-
-
-
-
-
