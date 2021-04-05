@@ -142,6 +142,10 @@ Graph * graph_init(){
 
 void graph_free(Graph *g){
   if (!g) return;
+  int i;
+  for(i=0;i<g->num_vertices;i++){
+    vertex_free(g->vertices[i]);
+  }
   free(g);
 }
 

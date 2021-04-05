@@ -24,7 +24,7 @@ Stack * stack_init (){
   
   s->capacity=INIT_CAPACITY;
   for(i=0;i<s->capacity;i++){
-    s->item[i]=NULL;
+    s->item=(void*)malloc(sizeof(void));
   }
   
   s->top=-1;  
@@ -38,19 +38,19 @@ void stack_free (Stack *s){
   free(s);
 }
 
-Status stack_push (Stack *s, void *ele){
+Status stack_push (Stack *s,const void *ele){
   if(!s || !ele) return ERROR;
   
   if(stack_isFull(s)==TRUE){
     s->capacity=s->capacity*FCT_CAPACITY;
     s=(Stack*)realloc(s,(s->capacity)*sizeof(Stack));
     s->top++;
-    s->item[s->top]=ele;
+    s->item[s->top]=(void*)ele;
     return OK;
   }
   else{
     s->top++;
-    s->item[s->top]=ele;
+    s->item[s->top]=(void*)ele;
     return OK;
   }  
 }
