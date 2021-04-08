@@ -29,9 +29,6 @@ p2_e1b: p2_e1b.o vertex.o stack_fDoble.o
 
 p2_e2: graph.o vertex.o p2_e2.o stack_fDoble.o
 	$(CC) -o p2_e2 graph.o vertex.o p2_e2.o stack_fDoble.o
-	
-run: p2_e2
-	./p2_e2 g2.txt 100 700
-	
-runv: p2_e2
-	valgrind --leak-check=full ./p2_e2 g2.txt 100 700
+
+clear:
+	rm -rf *.o
