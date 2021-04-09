@@ -1,0 +1,175 @@
+/**
+ * @file  delivery.h
+ * @author Profesores Programación 2
+ * @date 2 April 2021
+ * @version 1.0
+ * @brief Library to manage ADT Delivery
+ *
+ * @details 
+ * 
+ * @see
+ */
+#ifndef DELIVERY_H
+#define DELIVERY_H
+
+
+#include <stdio.h>
+#include "types.h"
+#include "product.h"
+#include "queue.h"
+
+
+/** 
+ * @brief Data structure to implement the ADT Delivery. 
+ *
+ **/
+/* START [Delivery] */
+typedef struct _Delivery Delivery;
+/* END [Delivery] */
+
+
+/**
+ * @brief Constructor. Initialize a delivery plan.
+ * 
+ * This function allocates memory for a delivery (including its plan, i.e., a Queue) and sets its fields to 
+ * their default values.
+ *
+ * @param name Name for this delivery
+ * @param productName Name of the products managed by this delivery
+ * 
+ * @code
+ * // Example of use
+ * Delivery * d;
+ * d = delivery_init("", "");
+ * @endcode
+ *
+ * @return Return the initialized delivery if it was done correctly, 
+ * otherwise return NULL.
+*/
+Delivery * delivery_init (char* name, char* productName);
+
+
+/**
+ * @brief Destructor. Free the dynamic memory reserved for a delivery, including its Queue.
+ *
+ * @param d Delivery to free
+ */
+void delivery_free (void * d);
+
+
+/**
+ * @brief Gets the name associated to this delivery.
+ *
+ * @param d Delivery pointer
+ *
+ * @return Returns a pointer to the name of the delivery, or NULL in 
+ * case of error.
+ */
+const char* delivery_getName (const Delivery * d);
+
+/**
+ * @brief Gets the name associated to the products of this delivery.
+ *
+ * @param d Delivery pointer
+ *
+ * @return Returns a pointer to the name of the product of this delivery, or NULL in 
+ * case of error.
+ */
+const char* delivery_getProductName (const Delivery * d);
+
+/**
+ * @brief Gets the capacity associated to this delivery.
+ *
+ * @param d Delivery pointer
+ *
+ * @return Returns the capacity of the delivery, or -1 in 
+ * case of error.
+ */
+int delivery_getCapacity (const Delivery * d);
+
+/**
+ * @brief Modifies the capacity of a given delivery
+ *
+ * @param d Delivery pointer
+ * @param cap New capacity
+ *
+ * @return Returns OK or ERROR in case of error.
+ */
+Status delivery_setCapacity (Delivery * d, int cap);
+
+/**
+ * @brief Gets the plan (as a queue) associated to this delivery.
+ *
+ * @param d Delivery pointer
+ *
+ * @return Returns a pointer to the queue that represents the plan of this delivery, or NULL in 
+ * case of error.
+ */
+Queue* delivery_getPlan (Delivery * d);
+
+/**
+ * @brief Adds a product to a delivery.
+ * NOT IMPLEMENTED IN THE LIBRARY
+ *
+ * @param d Delivery pointer
+ * @param p Product pointer
+ *
+ * @return Returns OK or ERROR.
+ */
+Status delivery_add(Delivery* d, Product* p);
+
+/**
+ * @brief Simulates running the plan associated to a delivery.
+ * NOT IMPLEMENTED IN THE LIBRARY
+ *
+ * @param pf File descriptor where the simulation will be shown.
+ * @param d Delivery pointer
+ *
+ * @return Returns OK or ERROR.
+ */
+Status delivery_run_plan(FILE * pf, Delivery* d);
+
+
+/**
+ * @brief Compares two deliveries.
+ *
+ * @param d1,d2 Deliveries to compare.
+ *
+ * @return It returns an integer less than, equal, or greater than zero
+ * if d1 is considered smaller, equal, or larger than d2.
+ */
+int delivery_cmp (const void * d1, const void * d2);
+
+
+/**
+ * @brief Allocates memory for a delivery where it copies the data from
+ * the delivery in src.
+ * 
+ * @param src Original delivery pointer
+ *
+ * @return Returns the pointer of the copied delivery if everything 
+ * went well, or NULL otherwise.
+ */
+void * delivery_copy (const void * src);
+
+
+/** 
+ * @brief Prints in pf the data of a delivery.
+ * 
+ * @code
+ * Delivery * d;
+ * d = delivery_init("", "");
+ * delivery_print (stdout, d);
+ * @endcode
+ *
+ * @param pf File descriptor
+ * @param d Delivery to be printed
+ * @param f Function pointer to print elements in the delivery plan
+ *
+ * @return Returns the number of characters that have been written 
+ * successfully. If there have been errors returns -1.
+ */
+int delivery_print (FILE * pf, const void * d, p_queue_ele_print f);
+
+
+#endif
