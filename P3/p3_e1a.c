@@ -3,30 +3,114 @@
 #include <stdlib.h>
 
 #include "delivery.h"
+#include "product.h"
+#include "vertex.h"
+
+#define MAX_DESC 32
 
 /*----------------------------------------------------------------------------------------*/
+
+Delivery* build_delivery(FILE * pf);
 
 Status delivery_add(Delivery* d, Product* p){
     if(!d || !p) return ERROR;
 
-    Queue *q = queue_new();
-    if (!q) return ERROR;
+    queue_push(delivery_getPlan(d),p);
 
-    q=delivery_getPlan(d);
-
-    queue_push(q,p);
-
-
-
-
+    return OK;
 }
 
 Status delivery_run_plan(FILE * pf, Delivery* d){
     if(!pf || !d) return ERROR;
+    int c, i;
+    char *tag;
+    Product *p;
+    Queue *q;
+    Vertex *v;
 
+    q=delivery_getPlan(d);
 
+    c=queue_size(q);
 
+    printf("Running delivery plan for queue:\n");
+    queue_print(stdout,q,product_print);
 
-
+    for(i=0;i<c;i++){
+        p=queue_pop(q);
+        v= (Vertex*) product_getVertex(p);
+        tag= (char *) vertex_getTag(v);
+        fprintf(stdout,"Delivering %s requested by %s to %s\n", delivery_getProductName(d), delivery_getName(d), tag);
+        product_free(p);
+    }
+    
+    return OK;
 }
 
+Delivery* build_delivery(FILE * pf){
+    if(!pf) return NULL;
+    char *name=NULL, *nameP=NULL, *desc=NULL;
+    int c, n, i, p;
+    Product *pr=NULL;
+    Vertex *v=NULL;
+    Delivery *d=NULL;
+
+    name=(char *) malloc (MAX_DESC*sizeof(char));
+    if(!name) return NULL;
+
+    nameP=(char *) malloc (MAX_DESC*sizeof(char));
+    if(!nameP) {
+        free(name);
+        return NULL;
+    }
+
+    desc=(char *) malloc (MAX_DESC*sizeof(char));
+    if(!desc) {
+        free(name);
+        free(nameP);
+        return NULL;
+    }
+    
+    fscanf(pf,"%s %s %d\n", name, nameP, &c);
+    fscanf(pf,"%d\n", &n);
+
+    d=delivery_init(name,nameP);
+    if(!d)return NULL;
+
+    for(i=0;i<n;i++){
+        fscanf(pf,"%d\n", &p);
+        fgets(desc,MAX_DESC,pf);
+
+        v=vertex_initFromString(desc);
+        pr=product_init(v);
+        printf("    Adding the following product:\n");
+        product_print(stdout,pr);
+        printf("\n    to delivery:\n");
+        delivery_print(stdout,d,product_print);
+        delivery_add(d,pr);
+    }
+
+    free(name);
+    free(nameP);
+    free(desc);
+    return d;
+}
+
+int main(int argc, char *argv[]){
+    FILE *f;
+    Delivery *d=NULL;
+
+    if (argc!=2){
+        return -1;
+    }
+
+    f=fopen(argv[1],"r");
+    if(!f) return -1;
+
+    d=build_delivery(f);
+
+    delivery_run_plan(stdout,d);
+
+    delivery_free(d);
+
+    return 0;
+}
