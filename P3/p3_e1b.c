@@ -26,7 +26,7 @@ Status delivery_add(Delivery* d, Product* p){
 
 Status delivery_run_plan(FILE * pf, Delivery* d){
     if(!pf || !d) return ERROR;
-    int c, i, j, *n=NULL, ca;
+    int c, i, *n=NULL, ca;
     char *tag;
     Product *p;
     Queue *q;
@@ -139,6 +139,8 @@ int main(int argc, char *argv[]){
     delivery_run_plan(stdout,d);
 
     delivery_free(d);
+
+    fclose(f);
 
     return 0;
 }

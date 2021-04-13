@@ -123,5 +123,7 @@ int main(int argc, char *argv[]){
 
     delivery_free(d);
 
+    fclose(f);
+
     return 0;
 }
