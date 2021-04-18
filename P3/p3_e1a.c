@@ -19,7 +19,7 @@ Delivery* build_delivery(FILE * pf);
 Status delivery_add(Delivery* d, Product* p){
     if(!d || !p) return ERROR;
 
-    queue_push(delivery_getPlan(d),p);
+    if(!queue_push(delivery_getPlan(d),p)) return ERROR;
 
     return OK;
 }
@@ -33,14 +33,13 @@ Status delivery_run_plan(FILE * pf, Delivery* d){
     Vertex *v;
 
     q=delivery_getPlan(d);
+    if(!q) return ERROR;
 
     c=queue_size(q);
 
-    printf("Running delivery plan for queue:\n");
-    queue_print(stdout,q,product_print);
-
     for(i=0;i<c;i++){
         p=queue_pop(q);
+        if(!p) return ERROR;
         v= (Vertex*) product_getVertex(p);
         tag= (char *) vertex_getTag(v);
         fprintf(stdout,"Delivering %s requested by %s to %s\n", delivery_getProductName(d), delivery_getName(d), tag);
@@ -85,17 +84,20 @@ Delivery* build_delivery(FILE * pf){
         return NULL;
     }
 
+    delivery_setCapacity(d,c);
+
     for(i=0;i<n;i++){
         fscanf(pf,"%d\n", &p);
         fgets(desc,MAX_DESC,pf);
 
         v=vertex_initFromString(desc);
         pr=product_init(v);
-        printf("    Adding the following product:\n");
-        product_print(stdout,pr);
-        printf("\n    to delivery:\n");
-        delivery_print(stdout,d,product_print);
-        delivery_add(d,pr);
+        if(!pr){
+            vertex_free(v);
+            return NULL;
+        }
+        product_setAmount(pr,p);
+        if (!delivery_add(d,pr)) product_free(pr);
     }
 
     free(name);
@@ -118,6 +120,10 @@ int main(int argc, char *argv[]){
     if(!f) return -1;
 
     d=build_delivery(f);
+    if (!d){
+        fclose(f);
+        return 0;
+    }
 
     delivery_run_plan(stdout,d);
 
