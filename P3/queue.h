@@ -30,7 +30,7 @@ Queue *queue_new();
  * @brief This function frees the memory used by the queue, but not the elements 
  * that it may contain.
  *
- * @param q A pointer to the queue to be freed.  
+ * @param q A pointer to the queue to be freed.
  *  */
 void queue_free(Queue *q);
 

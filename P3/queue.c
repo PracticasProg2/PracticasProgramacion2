@@ -12,6 +12,26 @@ struct _Queue{
     void** rear;
 };
 
+/*--------------------------*/
+/*
+    Private function:
+*/
+Bool _queue_isFull(const Queue *q);
+
+Bool _queue_isFull(const Queue *q) {
+    if (q == NULL) {
+        return TRUE;
+    }
+    if ((q->rear + 1 - q->front)%MAX_QUEUE == 0) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+/*-----------------------------*/
+
+
+
 Queue *queue_new() {
     Queue *q = NULL;
     int i;
@@ -40,11 +60,11 @@ Bool queue_isEmpty(const Queue *q) {
     return FALSE;
 }
 
-Status queue_push(Queue *q, const void *e) {
-    if (q == NULL || e == NULL || _queue_isFull(q) == TRUE)
+Status queue_push(Queue *q, void *ele) {
+    if (q == NULL || ele == NULL || _queue_isFull(q) == TRUE)
         return ERROR;
     
-    *(q->rear) = e;
+    *(q->rear) = ele;
 
     q->rear = q->data + (q->rear + 1 - q->data) % MAX_QUEUE;
 
@@ -79,7 +99,7 @@ void *queue_getBack(const Queue *q) {
         return NULL;
     
     if (q->rear == q->data)
-        back = q->data + MAX_QUEUE - 1;
+        back =  *(q->data + MAX_QUEUE - 1);
     
     else
         back = q->rear - 1;
@@ -101,4 +121,18 @@ size_t queue_size(const Queue *q){
     }
 
     return s;
+}
+
+int queue_print(FILE *fp, const Queue *q, p_queue_ele_print f){
+    if (!fp || !q || f==NULL) return -1;
+
+    int i, n;
+
+    for (i=0;i<MAX_QUEUE;i++){
+        if (q->data[i]!=NULL){
+            n+=f(fp,q->data[i]);
+        }
+    }
+
+    return n;
 }
