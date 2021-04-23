@@ -11,6 +11,9 @@ vertex.o: vertex.c vertex.h
 queue.o: queue.c queue.h
 	$(CC) $(CFLAGS) queue.c
 
+list.o: list.c list.h
+	$(CC) $(CFLAGS) list.c
+
 p3_e1a.o: p3_e1a.c
 	$(CC) $(CFLAGS) p3_e1a.c
 

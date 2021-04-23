@@ -94,6 +94,7 @@ Delivery* build_delivery(FILE * pf){
         pr=product_init(v);
         if(!pr){
             vertex_free(v);
+            delivery_free(d);
             return NULL;
         }
         product_setAmount(pr,p);

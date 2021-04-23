@@ -109,7 +109,7 @@ return *back;
 
 size_t queue_size(const Queue *q){
 
-    if(!q) return -1;
+    if(!q) return 0;
     if (queue_isEmpty(q)==TRUE) return 0;
 
     int i;

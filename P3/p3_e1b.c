@@ -51,14 +51,14 @@ Status delivery_run_plan(FILE * pf, Delivery* d){
         n[i]=product_getAmount(p);
         if(ca>0){
             ca=ca-n[i];
-            fprintf(stdout,"Delivering %s requested by %s to %s: ", delivery_getProductName(d), delivery_getName(d), tag);
+            fprintf(stdout,"Delivering %s requested by %s to %s\n", delivery_getProductName(d), delivery_getName(d), tag);
             if(ca<0)
-                printf("less than requested, wanted %d, obtained %d\n", n[i], ca+n[i]);
+                printf("    less than requested, wanted %d, obtained %d\n", n[i], ca+n[i]);
             else 
-                printf("wanted %d\n", n[i]);
+                printf("    wanted %d\n", n[i]);
         }
         else
-            printf("Not delivering %s requested by %s to %s: wanted %d, max capacity %d\n", delivery_getProductName(d), delivery_getName(d), tag, n[i], delivery_getCapacity(d));
+            printf("Not delivering %s requested by %s to %s\n   wanted %d, max capacity %d\n", delivery_getProductName(d), delivery_getName(d), tag, n[i], delivery_getCapacity(d));
         product_free(p);
     }
     
@@ -111,6 +111,7 @@ Delivery* build_delivery(FILE * pf){
         pr=product_init(v);
         if(!pr){
             vertex_free(v);
+            delivery_free(d);
             return NULL;
         }
         product_setAmount(pr,p);
