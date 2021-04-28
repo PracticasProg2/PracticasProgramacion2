@@ -231,5 +231,22 @@ size_t list_size(const List *pl){
 }
 
 int list_print(FILE *fp, const List *pl, P_ele_print f){
+    if(!fp || !pl || f==NULL) return -1;
+    NodeList *n;
+    int i, s, l=0;
 
+    s=list_size(pl);
+
+    n=pl->last;
+    n=n->next;
+
+    for(i=0;i<s;i++){
+        if(n->data==NULL) break;
+
+        l+=f(fp,n->data);
+
+        n=n->next;
+    }
+
+    return l;
 }
