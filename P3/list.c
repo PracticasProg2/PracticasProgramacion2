@@ -122,43 +122,57 @@ Status list_pushBack(List *pl, void *e){
 
 Status list_pushInOrder (List *pl, void *e, P_ele_cmp f, int order){
     if (!pl || !e || f==NULL || order==0) return ERROR;
-    NodeList *n, *n2;
+    NodeList *n, *n2=NULL;
     int i, s;
 
     s=list_size(pl);
+
     n=pl->last;
+    n=n->next;
+
     n2=node_new();
+    if(n2 == NULL) return ERROR;
+
     n2->data=e;
     if (order > 0){
         for (i=0;i<s;i++){
-            if (f(n->next->data,e)==1){
+            if (f(n->next->data,e)>=0){
                 n2->next=n->next;
+                n->next=n2;
+                return OK;
             }
-            else {
+            else
                 n=n->next;
-            }
+        }
     }
-    
+    else{
+        for (i=0;i<s;i++){
+            if (f(n->next->data,e)<=0){
+                n2->next=n->next;
+                n->next=n2;
+                return OK;
+            }
+            else
+                n=n->next;
+        }
+    }
 }
 
-void *list_popFront(List *pl){
+void *list_popFront (List *pl) {
     NodeList *pn = NULL;
     void *pe = NULL;
 
-    if (pl == NULL || list_isEmpty(pl) == TRUE) {
+    if (pl == NULL || list_isEmpty(pl) == TRUE)
         return NULL;
-    }
 
     pn = pl->last->next;
     pe = pn->data;
 
-    if (pl->last->next == pl->last) {
+    if (pl->last->next == pl->last)
         pl->last = NULL;
-    }
 
-    else {
+    else
         pl->last->next = pn->next;
-    }
 
     free(pn);
     return pe;
@@ -167,9 +181,8 @@ void *list_popFront(List *pl){
 void *list_popBack(List *pl){
     NodeList *pn = NULL;
     void *pe = NULL;
-    if (pl == NULL || list_isEmpty(pl) == TRUE) {
+    if (pl == NULL || list_isEmpty(pl) == TRUE)
         return NULL;
-    }
 
     if (pl->last->next == pl->last) {
         pe = pl->last->data;
@@ -180,9 +193,8 @@ void *list_popBack(List *pl){
 
     pn = pl->last;
 
-    while (pn->next != pl->last) {
+    while (pn->next != pl->last)
         pn = pn->next;
-    }
 
     pe = pl->last->data;
     pn->next = pl->last->next;
