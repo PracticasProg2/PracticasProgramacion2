@@ -1,0 +1,30 @@
+Cuestiones
+
+    1.-
+        a) Pila:    [100, Madrid, 1, 0]                      Cola:  [100, Madrid, 1, 0]
+                    [300, Segovia, 1, 2]                            [200, Toledo, 1, 1]
+                    [500, Burgos, 1, 4]                             [300, Segovia, 1, 2]
+                    [700, Santander, 1, 6]                          [400, Valladolid, 1, 3]
+                                                                    [500, Burgos, 1, 4]
+                                                                    [700, Santander, 1, 6]
+
+        b) Pila:    [700, Santander, 1, 6]                   Cola:  [700, Santander, 1, 6]
+                    Error in graph search algorithm.                Error in graph search algorithm.
+
+        c) Pila:    [300, Segovia, 1, 2]                     Cola:  [300, Segovia, 1, 2]
+                    [500, Burgos, 1, 4]                             [400, Valladolid, 1, 3]
+                    [700, Santander, 1, 6]                          [600, Palencia, 1, 5]
+                    [600, Palencia, 1, 5]
+
+        d) Pila:    [300, Segovia, 1, 2]                     Cola:  [300, Segovia, 1, 2] 
+                    [500, Burgos, 1, 4]                             [400, Valladolid, 1, 3]
+                    [700, Santander, 1, 6]                          [500, Burgos, 1, 4]
+                    [600, Palencia, 1, 5]                           [600, Palencia, 1, 5]
+                    [400, Valladolid, 1, 3]                         [700, Santander, 1, 6]
+                    Error in graph search algorithm.                Error in graph search algorithm.
+
+    2.- El TAD lista es mas eficiente aunque tambien mas complejo que un array, si 
+    usas una lista para los vertices tienes un puntero que apunta a la siguiente 
+    posición y otro puntero que apunta al vertice en si, lo cual puede simplificar 
+    bastante el código. Con una queue seria menos eficiente ya que solo se pueden 
+    pushear y popear datos de un lado y no de los dos como se puede hacer con la cola.
