@@ -106,16 +106,87 @@ int _bst_postOrder_rec (BSTNode * pn, FILE * pf, P_tree_ele_print print_ele) {
     return count;
 }
 
-void * _find_max_rec(BSTNode *pn){
-    if (!pn->right) return pn->info;
+BSTNode * _bst_find_max_rec(BSTNode *pn){
+    if (!pn->right) return pn;
 
-    return _find_max_rec(pn->right);
+    return _bst_find_max_rec(pn->right);
 }
 
-void * _bst_find_min_rec(BSTNode *pn){
-    if (!pn->left) return pn->info;
+BSTNode * _bst_find_min_rec(BSTNode *pn){
+    if (!pn->left) return pn;
 
     return _bst_find_min_rec(pn->left);
+}
+
+Bool _bst_contains_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
+    if(!pn->left && !pn->right) return FALSE;
+
+    if(pn->info==e) return TRUE;
+
+    if(cmp_ele(pn->info,e)>0){
+        if(!pn->left) return FALSE;
+        return _bst_contains_rec (pn->left,e,cmp_ele);
+    }
+
+    if(!pn->right) return FALSE;
+    
+    return _bst_contains_rec (pn->left,e,cmp_ele);
+}
+
+Status _bst_insert_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
+
+    if(cmp_ele(pn->info,e)>0){
+        if(!pn->left){
+            BSTNode *n;
+            
+            n=_bst_node_new();
+
+            n->info= (void *) e;
+            pn->left=n;
+            
+            return OK;
+        }
+        return _bst_contains_rec (pn->left,e,cmp_ele);
+    }
+
+    if(!pn->right){
+        BSTNode *n;
+
+        n=_bst_node_new();
+
+        n->info= (void *) e;
+        pn->left=n;
+            
+        return OK;
+    }
+    return _bst_contains_rec (pn->left,e,cmp_ele);
+}
+
+BSTNode * _bst_remove_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
+
+    if(!pn) return NULL;
+
+    if(cmp_ele(pn->info,e)>0)
+        pn->left=_bst_remove_rec (pn->left,e,cmp_ele);
+
+    else if(cmp_ele(pn->info,e)<0)
+        pn->right=_bst_remove_rec (pn->right,e,cmp_ele);
+
+    else if(cmp_ele(pn->info,e)==0){
+        if(!pn->left || !pn->right){
+            _bst_node_free(pn);
+        }
+        else if (!pn->left){
+
+        }
+        else if (!pn->right){
+            
+        }
+        else{
+
+        }
+    }
+
 }
 
 /*** BSTree TAD functions ***/
@@ -181,13 +252,35 @@ int tree_postOrder (FILE *f, const BSTree * tree){
 void * tree_find_min(BSTree * tree){
     if(!tree) return NULL;
 
-    return _bst_find_min_rec(tree->root);
+    BSTNode *n = _bst_find_min_rec(tree->root);
+
+    return n->info;
 }
 
 void * tree_find_max (BSTree * tree){
     if(!tree) return NULL;
     
-    return _find_max_rec(tree->root);
+    BSTNode *n = _bst_find_max_rec(tree->root);
+
+    return n->info;
+}
+
+Bool tree_contains (BSTree * tree, const void * elem){
+    if (!tree || !elem) return FALSE;
+
+    return _bst_contains_rec (tree->root,elem,tree->cmp_ele);
+}
+
+Status tree_insert (BSTree * tree, const void * elem){
+    if(!tree || !elem) return ERROR;
+
+    if (tree_contains(tree,elem)==TRUE) return OK;
+
+    return _bst_insert_rec(tree->root,elem,tree->cmp_ele);
+}
+
+Status tree_remove (BSTree * tree, const void * elem){
+
 }
 
 
