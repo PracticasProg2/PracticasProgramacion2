@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "bstree.h"
-#include <stdio.h>
+#include "vertex.h"
 /* START [_BSTNode] */
 typedef struct _BSTNode {
     void * info;
@@ -119,49 +119,39 @@ BSTNode * _bst_find_min_rec(BSTNode *pn){
 }
 
 Bool _bst_contains_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
-    if(!pn->left && !pn->right) return FALSE;
+    if(!pn) return FALSE;
 
-    if(pn->info==e) return TRUE;
+    if(cmp_ele(pn->info,e)==0) return TRUE;
 
     if(cmp_ele(pn->info,e)>0){
-        if(!pn->left) return FALSE;
         return _bst_contains_rec (pn->left,e,cmp_ele);
     }
-
-    if(!pn->right) return FALSE;
-    
-    return _bst_contains_rec (pn->left,e,cmp_ele);
+    else
+        return _bst_contains_rec (pn->right,e,cmp_ele);
 }
 
-Status _bst_insert_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
+BSTNode * _bst_insert_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
+
+    if(!pn){
+        pn=_bst_node_new();
+        if (!pn) return NULL;
+        pn->info = (void *) e;
+        return pn;
+    }
 
     if(cmp_ele(pn->info,e)>0){
-        if(!pn->left){
-            BSTNode *n;
-            
-            n=_bst_node_new();
-            if(!n) return ERROR;
-
-            n->info= (void *) e;
-            pn->left=n;
-            
-            return OK;
-        }
-        return _bst_contains_rec (pn->left,e,cmp_ele);
+        pn->left = _bst_insert_rec (pn->left,e,cmp_ele);
     }
 
-    if(!pn->right){
-        BSTNode *n;
-
-        n=_bst_node_new();
-        if(!n) return ERROR;
-
-        n->info= (void *) e;
-        pn->left=n;
-            
-        return OK;
+    else if (cmp_ele(pn->info,e)<0){
+        pn->right = _bst_insert_rec (pn->right,e,cmp_ele);
     }
-    return _bst_contains_rec (pn->left,e,cmp_ele);
+
+    else if (cmp_ele(pn->info,e)==0){
+        return pn;
+    }
+
+    return pn;
 }
 
 BSTNode * _bst_remove_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
@@ -195,10 +185,9 @@ BSTNode * _bst_remove_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
             aux_node = _bst_find_min_rec(pn->right);
             pn->info = aux_node->info;
             pn->right = _bst_remove_rec(pn->right,aux_node->info,cmp_ele);
-
         }
     }
-
+    return pn;
 }
 
 /*** BSTree TAD functions ***/
@@ -265,6 +254,7 @@ void * tree_find_min(BSTree * tree){
     if(!tree) return NULL;
 
     BSTNode *n = _bst_find_min_rec(tree->root);
+    if(!n) return NULL;
 
     return n->info;
 }
@@ -273,6 +263,7 @@ void * tree_find_max (BSTree * tree){
     if(!tree) return NULL;
     
     BSTNode *n = _bst_find_max_rec(tree->root);
+    if(!n) return NULL;
 
     return n->info;
 }
@@ -284,11 +275,16 @@ Bool tree_contains (BSTree * tree, const void * elem){
 }
 
 Status tree_insert (BSTree * tree, const void * elem){
+
+    BSTNode *n;
+
     if(!tree || !elem) return ERROR;
 
-    if (tree_contains(tree,elem)==TRUE) return OK;
+    n= _bst_insert_rec(tree->root,elem,tree->cmp_ele);
+    if(!n)return ERROR;
+    tree->root=n;
 
-    return _bst_insert_rec(tree->root,elem,tree->cmp_ele);
+    return OK;
 }
 
 Status tree_remove (BSTree * tree, const void * elem){
