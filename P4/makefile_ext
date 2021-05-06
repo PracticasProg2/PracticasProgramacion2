@@ -22,9 +22,3 @@ p4_e1_bal: p4_e1
 
 p4_e1.o: p4_e1.c
 	gcc -g -Wall -pedantic -ansi -c p4_e1.c
-
-bstree.o: bstree.c bstree.h
-	gcc -c -g -Wall -pedantic bstree.c
-
-vertex.o: vertex.c vertex.h
-	gcc -c -g -Wall -pedantic vertex.c

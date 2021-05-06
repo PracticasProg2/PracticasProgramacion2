@@ -166,21 +166,21 @@ BSTNode * _bst_remove_rec (BSTNode *pn, const void *e, P_tree_ele_cmp cmp_ele){
 
     else if(cmp_ele(pn->info,e)==0){
         BSTNode *n;
-        if(!pn->left || !pn->right){
+        if(!pn->left && !pn->right){
             _bst_node_free(pn);
             return NULL;
         }
-        else if (!pn->left){
+        else if (!pn->left && pn->right !=NULL){
             n=pn->right;
             _bst_node_free(pn);
             return n;
         }
-        else if (!pn->right){
+        else if (!pn->right && pn->left !=NULL){
             n=pn->left;
             _bst_node_free(pn);
             return n;
         }
-        else{
+        else if (pn->left !=NULL && pn->right !=NULL) {
             BSTNode *aux_node;
             aux_node = _bst_find_min_rec(pn->right);
             pn->info = aux_node->info;
@@ -288,11 +288,12 @@ Status tree_insert (BSTree * tree, const void * elem){
 }
 
 Status tree_remove (BSTree * tree, const void * elem){
+    BSTNode *n;
     if(!tree || !elem) return ERROR;
 
-    if (tree_contains(tree,elem)==FALSE) return OK;
-
-    _bst_remove_rec(tree->root,elem,tree->cmp_ele);
+    n=_bst_remove_rec(tree->root,elem,tree->cmp_ele);
+    if(!n)return ERROR;
+    tree->root=n;
 
     return OK;
 }
