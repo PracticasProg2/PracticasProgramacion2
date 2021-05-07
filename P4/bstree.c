@@ -251,7 +251,7 @@ int tree_postOrder (FILE *f, const BSTree * tree){
 }
 
 void * tree_find_min(BSTree * tree){
-    if(!tree) return NULL;
+    if(!tree || tree_isEmpty(tree)==TRUE) return NULL;
 
     BSTNode *n = _bst_find_min_rec(tree->root);
     if(!n) return NULL;
@@ -260,7 +260,7 @@ void * tree_find_min(BSTree * tree){
 }
 
 void * tree_find_max (BSTree * tree){
-    if(!tree) return NULL;
+    if(!tree || tree_isEmpty(tree)==TRUE) return NULL;
     
     BSTNode *n = _bst_find_max_rec(tree->root);
     if(!n) return NULL;
@@ -288,8 +288,14 @@ Status tree_insert (BSTree * tree, const void * elem){
 }
 
 Status tree_remove (BSTree * tree, const void * elem){
-    BSTNode *n;
+    BSTNode *n, *aux;
     if(!tree || !elem) return ERROR;
+
+    aux=tree->root;
+    if(tree->cmp_ele(tree->root,elem)==0 && !aux->left && !aux->right){
+        _bst_node_free(tree->root);
+        return OK;
+    }
 
     n=_bst_remove_rec(tree->root,elem,tree->cmp_ele);
     if(!n)return ERROR;

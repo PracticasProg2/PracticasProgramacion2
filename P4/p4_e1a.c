@@ -20,7 +20,6 @@ int main () {
 
     if(!tree) return -1;
 
-
     v[0]=vertex_initFromString("id:100 tag:Madrid");
     if(tree_insert(tree,v[0])==ERROR)
         tree_destroy(tree);
