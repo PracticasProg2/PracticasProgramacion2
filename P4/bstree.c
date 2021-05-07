@@ -277,8 +277,8 @@ Bool tree_contains (BSTree * tree, const void * elem){
 Status tree_insert (BSTree * tree, const void * elem){
 
     BSTNode *n;
-
-    if(!tree || !elem) return ERROR;
+    if(!tree || !elem) return ERROR
+;
 
     n= _bst_insert_rec(tree->root,elem,tree->cmp_ele);
     if(!n)return ERROR;
@@ -288,17 +288,13 @@ Status tree_insert (BSTree * tree, const void * elem){
 }
 
 Status tree_remove (BSTree * tree, const void * elem){
-    BSTNode *n, *aux;
+    BSTNode *n;
     if(!tree || !elem) return ERROR;
 
-    aux=tree->root;
-    if(tree->cmp_ele(tree->root,elem)==0 && !aux->left && !aux->right){
-        _bst_node_free(tree->root);
-        return OK;
-    }
+    if(tree_isEmpty(tree)==TRUE) return ERROR;
 
     n=_bst_remove_rec(tree->root,elem,tree->cmp_ele);
-    if(!n)return ERROR;
+
     tree->root=n;
 
     return OK;
