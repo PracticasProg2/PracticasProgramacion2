@@ -277,8 +277,7 @@ Bool tree_contains (BSTree * tree, const void * elem){
 Status tree_insert (BSTree * tree, const void * elem){
 
     BSTNode *n;
-    if(!tree || !elem) return ERROR
-;
+    if(!tree || !elem) return ERROR;
 
     n= _bst_insert_rec(tree->root,elem,tree->cmp_ele);
     if(!n)return ERROR;
